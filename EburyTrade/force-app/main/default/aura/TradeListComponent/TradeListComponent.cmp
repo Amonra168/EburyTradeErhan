@@ -1,0 +1,74 @@
+<aura:component controller='TradeListComponentController' implements="force:appHostable" >
+    
+    <!-- attributes -->
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.myAction }"/>
+    
+    <lightning:card title="Booked Trades" >
+        <aura:set attribute="actions">
+            <c:CreateNewTrade/>
+        </aura:set>
+        
+        <div class="slds-p-around_x-small">
+            <table style="border: 1px solid lightgray;" class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered" aria-label="Example table of Opportunities with vertical borders">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="ID">Id</div>
+                        </th>
+                        
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Sell Currency">Sell Currency</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Sell Amount">Sell Amount</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Buy Currency">Buy Currency</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Buy Amount">Buy Amount</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Rate">Rate</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Date Booked">Date Booked</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.data}" var="trade">
+                        <tr class="slds-hint-parent">
+                             <th data-label="Id" scope="row">
+                                <div class="slds-truncate">{!trade.Name}</div>
+                            </th>
+                            
+                            <th data-label="Sell Currency" scope="row">
+                                <div class="slds-truncate">{!trade.Sell_Currency__c}</div>
+                            </th>
+                            <td data-label="Sell Amount">
+                                <p><lightning:formattedNumber value="{!trade.Sell_Amount__c}" maximumFractionDigits="2"/></p>
+                            </td>
+                            <td data-label="Buy Currency">
+                                <div class="slds-truncate">{!trade.Buy_Currency__c}</div>
+                            </td>
+                            <td data-label="Buy Amount"> 
+                                <p><lightning:formattedNumber value="{!trade.Buy_Amount__c}" maximumFractionDigits="2"/></p>
+                            </td>
+                            <td data-label="Rate">
+                                <p><lightning:formattedNumber value="{!trade.Rate__c}" maximumFractionDigits="2"/></p>
+                            </td>
+                            <td data-label="Date Booked">
+                                <div class="slds-truncate">{!trade.Date_Booked__c}</div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </div>
+    </lightning:card>
+</aura:component>

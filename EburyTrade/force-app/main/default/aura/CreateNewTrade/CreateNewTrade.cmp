@@ -1,0 +1,76 @@
+<aura:component controller='CreateNewTradeController' implements="flexipage:availableForRecordHome,force:hasRecordId,lightning:actionOverride" 
+                access="global" >
+    
+    <!--attributes-->  
+    <aura:attribute name="rate" type="string" default="0.0000"/>
+    <aura:attribute name="buyAmount" type="decimal" default="0"/>
+    <aura:attribute name="sellAmount" type="decimal" default="0"/>
+    <aura:attribute name="sellCurrency" type="string" default=""/>
+    <aura:attribute name="buyCurrency" type="string" default=""/>
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="currencyCodes" type="List"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:button variant="brand"
+                      label="New Trade"
+                      title="New Trade"
+                      onclick="{! c.openModel }" />
+    <!--Use aura:if tag to display/hide popup based on isModalOpen value-->  
+    <aura:if isTrue="{!v.isModalOpen}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Trade</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning:layout >
+                        <lightning:layoutItem size='4'>
+                            <lightning:select value="{!v.sellCurrency}" name="SellCurrency" label="Sell Currency" required="true" onchange="{!c.currencyChange}">  
+                                <option value=""></option>
+                                <aura:iteration items="{!v.currencyCodes}" var="i">
+                                    <option text="{!i}" value="{!i}"/>
+                                </aura:iteration>
+                            </lightning:select>
+                            <lightning:input value="{!v.sellAmount}"  type="number" label="Sell Amount" required="true" onchange="{!c.amountChange}"/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size='4'>
+                            <center>Rate</center>
+                            <div class="slds-align_absolute-center" style="height:5rem">
+                                <lightning:icon iconName="utility:right" alternativeText="" title="" size="small"/>
+                                 <lightning:formattedNumber value="{!v.rate}" maximumFractionDigits="4"/>	
+                                <lightning:icon iconName="utility:right" alternativeText="" title="" size="small"/>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size='4'>
+                            <lightning:select name="BuyCurrency" value="{!v.buyCurrency}" label="Buy Currency" required="true" onchange="{!c.currencyChange}">
+                                <option value=""></option>
+                                <aura:iteration items="{!v.currencyCodes}" var="i">
+                                    <option text="{!i}" value="{!i}"/>
+                                </aura:iteration>
+                            </lightning:select>
+                            <lightning:input value="{!v.buyAmount}" type="number" label="Buy Amount" disabled="true"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral"
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    
+                    <lightning:button variant="brand"
+                                      label="Create"
+                                      title="Create"
+                                      onclick="{!c.createTrade}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>
